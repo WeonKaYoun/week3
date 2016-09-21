@@ -19,13 +19,7 @@ void drawPixel(const int& i, const int& j, const float& red, const float& green,
 
 void drawLine(const int& i0, const int& j0, const int& i1, const int& j1, const float& red, const float& green, const float& blue)
 {
-	if (i0 == i1)
-	{
-		for (int k = j0; k < j1; k++)
-			drawPixel(i0, k, 0.0f, 0.0f, 0.0f);
-		return;
-	}
-	else
+	if (i0 != i1)
 	{
 		for (int i = i0; i <= i1; i++)
 		{
@@ -33,6 +27,11 @@ void drawLine(const int& i0, const int& j0, const int& i1, const int& j1, const 
 
 			drawPixel(i, j, red, green, blue);
 		}
+	}
+	else
+	{
+		for (int k = j0; k < j1; k++)
+			drawPixel(i0, k, 0.0f, 0.0f, 0.0f);
 	}
 }
 
@@ -46,33 +45,33 @@ void drawOnPixelBuffer()
 
 	//squre
 	drawLine(100, 450, 200, 450, 0.0f, 0.0f, 0.0f);
-	drawLine(100, 500, 200, 500, 0.0f, 0.0f, 0.0f); 
+	drawLine(100, 500, 200, 500, 0.0f, 0.0f, 0.0f);
 	drawLine(100, 450, 100, 500, 0.0f, 0.0f, 0.0f);
 	drawLine(200, 450, 200, 500, 0.0f, 0.0f, 0.0f);
 
 	//thicker line
-	for (int x = 1; x < 8; x++) 
+	for (int x = 1; x < 8; x++)
 	{
-	drawLine(300, 450+x, 400, 500+x, 0.0f, 0.0f, 0.0f);
+		drawLine(300, 450 + x, 400, 500 + x, 0.0f, 0.0f, 0.0f);
 	}
 
 	//square filled with a non-white color
-	for (int m = 450; m < 500;m++)
+	for (int m = 450; m < 500; m++)
 		drawLine(500, m, 600, m, 1.0f, 0.0f, 1.0f);
 
 	//triangle
 	drawLine(100, 200, 200, 200, 0.0f, 0.0f, 0.0f);
 	for (int n = 0; n < 3; n++)
 	{
-		drawLine(100, 200+n, 150, 300+n, 0.0f, 0.0f, 0.0f);
-		drawLine(150, 300+n, 200, 200+n, 0.0f, 0.0f, 0.0f);
+		drawLine(100, 200 + n, 150, 300 + n, 0.0f, 0.0f, 0.0f);
+		drawLine(150, 300 + n, 200, 200 + n, 0.0f, 0.0f, 0.0f);
 	}
 
 	//pentagon
 	drawLine(295, 200, 405, 200, 0.0f, 0.0f, 0.0f);
 	for (int k = 0; k < 2; k++)
 	{
-		drawLine(270, 290 +k, 350, 350 + k, 0.0f, 0.0f, 0.0f);
+		drawLine(270, 290 + k, 350, 350 + k, 0.0f, 0.0f, 0.0f);
 		drawLine(350, 350 + k, 430, 290 + k, 0.0f, 0.0f, 0.0f);
 	}
 	for (int l = 0; l < 4; l++)
@@ -82,9 +81,22 @@ void drawOnPixelBuffer()
 	}
 
 	//circle
+	int r = 60;
 
+	for (int a = 560 - r; a < 560 + r; a++)
+	{
+		for (int b = 250 - r; b < 250 + r; b++)
+		{
+			//원의 방정식 이용
+			int c = ((a - 560)*(a - 560) + (b - 250)*(b - 250) - (r - 1)*(r - 1));
+			int d = ((a - 560)*(a - 560) + (b - 250)*(b - 250) - r * r);
 
-
+			if (c > 0 && d < 0)
+			{
+				drawPixel(a, b, 0.0f, 0.0f, 0.0f);
+			}
+		}
+	}
 }
 
 int main(void)
@@ -107,7 +119,7 @@ int main(void)
 	glfwMakeContextCurrent(window);
 	glClearColor(1, 1, 1, 1); // while background
 
-	/* Loop until the user closes the window */
+							  /* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
 		/* Render here */
